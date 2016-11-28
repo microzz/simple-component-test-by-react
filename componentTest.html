@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Component Test</title>
+</head>
+<body>
+
+<div id="container"></div>
+
+<script src="js/react.min.js"></script>
+<script src="js/JSXTransformer.js"></script>
+
+<script type="text/jsx">
+
+    let Gender = React.createClass({
+        render() {
+            return (
+            <select onChange={this.props.handleSelect}>
+                <option value="0">男</option>
+                <option value="1">女</option>
+            </select>
+            )}
+    });
+
+    let Form = React.createClass({
+        getInitialState: function () {
+            return {
+                name: '',
+                password: '',
+                gender: ''
+            }
+        },
+        handleSelect: function (event) {
+            this.setState({
+                gender: event.target.value
+            })
+        },
+        handleChange: function (type, event) {
+            let newState = {};
+            newState[type] = event.target.value;
+            this.setState(newState)
+        },
+        render() {
+            let showStyle1 = {
+                    display: this.state.name ? 'block' : 'none'
+            };
+            let showStyle2 = {
+                    display: this.state.password ? 'block' : 'none'
+            };
+            let showStyle3 = {
+                    display: this.state.gender ? 'block' : 'none'
+            };
+            return (
+                    <div>
+                        <form>
+                            <input type="text" onChange={this.handleChange.bind(this, 'name')} placeholder="Please input username"/>
+                            <input type="password" onChange={this.handleChange.bind(this, 'password')} placeholder="Please input password"/>
+                            <Gender handleSelect={this.handleSelect}/>
+                        </form>
+                        <div style={showStyle1}>用户名：{this.state.name}</div>
+                        <div style={showStyle2}>密码：{this.state.password}</div>
+                        <div style={showStyle3}>性别：{ +this.state.gender ? '女' : '男'}</div>
+                    </div>
+            );
+        }
+    });
+
+    React.render(<Form/>, document.querySelector('#container'));
+
+</script>
+
+</body>
+</html>
